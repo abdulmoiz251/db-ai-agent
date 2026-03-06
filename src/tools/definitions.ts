@@ -44,19 +44,16 @@ Always return userId, name, email, and totalSpent in the final output.`,
   },
   {
     name: "send_email",
-    description: "Send a discount code email to a single user.",
+    description: "Send an email to a single user. You write the subject and body based on the user's intent.",
     parameters: {
       type: "object",
       properties: {
-        to: { type: "string", description: "Recipient email address" },
-        name: { type: "string", description: "Recipient's first name" },
-        discountCode: { type: "string", description: "Discount code to include in the email" },
-        discountPercent: {
-          type: "number",
-          description: "Discount percentage (e.g. 20 for 20% off)",
-        },
+        to:      { type: "string", description: "Recipient email address" },
+        name:    { type: "string", description: "Recipient's first name" },
+        subject: { type: "string", description: "Email subject line" },
+        body:    { type: "string", description: "Plain-text email body. Be friendly and concise." },
       },
-      required: ["to", "name", "discountCode", "discountPercent"],
+      required: ["to", "name", "subject", "body"],
     },
   },
 ];

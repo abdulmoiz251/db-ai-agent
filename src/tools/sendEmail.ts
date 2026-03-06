@@ -3,8 +3,8 @@ import nodemailer from "nodemailer";
 interface SendEmailInput {
   to: string;
   name: string;
-  discountCode: string;
-  discountPercent: number;
+  subject: string;
+  body: string;
 }
 
 function createTransport() {
@@ -17,11 +17,7 @@ function createTransport() {
     throw new Error("SMTP_HOST, SMTP_USER, SMTP_PASS must be set in .env");
   }
 
-  return nodemailer.createTransport({
-    host,
-    port,
-    auth: { user, pass },
-  });
+  return nodemailer.createTransport({ host, port, auth: { user, pass } });
 }
 
 export async function sendEmail(input: SendEmailInput): Promise<string> {
@@ -32,19 +28,10 @@ export async function sendEmail(input: SendEmailInput): Promise<string> {
     const info = await transport.sendMail({
       from,
       to: input.to,
-      subject: `You've earned ${input.discountPercent}% off — thank you for being a top customer!`,
-      text: `Hi ${input.name},\n\nThank you for being one of our top customers last month!\n\nHere's your exclusive discount code: ${input.discountCode}\nDiscount: ${input.discountPercent}% off your next order\n\nBest,\nThe Team`,
-      html: `
-        <h2>Hi ${input.name},</h2>
-        <p>Thank you for being one of our <strong>top customers</strong> last month!</p>
-        <p>Here's your exclusive discount code:</p>
-        <h1 style="letter-spacing:4px; color:#e44;">${input.discountCode}</h1>
-        <p><strong>${input.discountPercent}% off</strong> your next order.</p>
-        <p>Best,<br/>The Team</p>
-      `,
+      subject: input.subject,
+      text: input.body,
     });
 
-    // nodemailer v8: testMessageUrl is returned directly on info for Ethereal
     const preview = (info as unknown as { testMessageUrl?: string }).testMessageUrl ?? null;
     return JSON.stringify({ success: true, messageId: info.messageId, preview });
   } catch (err) {
