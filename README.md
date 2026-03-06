@@ -1,12 +1,20 @@
 # db-ai-agent
 
-An AI agent that takes a natural language command from the terminal, queries MongoDB, and sends emails — all autonomously via tool calling.
+An AI agent that takes a natural language command from the terminal -> generates respective queries for MongoDB & executes -> and sends emails if needed — all autonomously via tool calling.
 
 ```bash
 npm start "Find the top 3 users who spent the most last month and send them a discount code."
 ```
 
-The agent figures out the MongoDB query, fetches the data, generates discount codes, and sends emails — no hardcoded logic.
+```bash
+npm start "Find the top 5 users who and send them a thank you email."
+```
+
+```bash
+npm start "Find the top 1 user who spent the least last month and send them long time no see  email."
+```
+
+The agent figures out the MongoDB query, fetches the data, generates dynamic email content that user asked for, and sends emails — no hardcoded logic.
 
 ---
 
